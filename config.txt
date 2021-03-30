@@ -1,0 +1,1 @@
+docker run -v alias-data:/alias --name=aliaswalletd-node -d   -p 37347:37347 -p 127.0.0.1:36657:36657  -v configuration/alias.conf:/alias/.aliaswallet/alias.conf aliascash/docker-aliaswalletd:4.3.1

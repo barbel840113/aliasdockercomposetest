@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+    aliaswalletd-nodeA:
+        image: aliascash/docker-aliaswalletd:4.3.1    
+        volumes:
+            - type: bind
+              source: ./configuration/alias.conf
+              target: /alias/.aliaswallet/alias.conf
+              read_only: false
+            - type: bind
+              source: ./wallets/testnet/wallet.dat
+              target: /alias/.aliaswallet/testnet/wallet.dat
+              read_only: false 
+            - type: bind
+              source: ./wallets/main/wallet.dat
+              target: /alias/.aliaswallet/wallet.dat
+              read_only: false    
+            - type: volume
+              source: alliasWalletNodeA
+              target: /usr/share/alliaswalletd/data
+        ports:
+            - "37347:37347"
+            - "127.0.0.1:36657:36657" 
+        environment:
+            - TESTNET       
+        networks:
+            - als
+
+    aliaswalletd-nodeB:
+      image: aliascash/docker-aliaswalletd:4.3.1    
+      volumes:
+          - type: bind
+            source: ./configuration/alias-test.conf
+            target: /alias/.aliaswallet/alias.conf
+            read_only: false        
+          - type: volume
+            source: alliaswalletNodeB
+            target: /usr/share/alliaswalletd/data
+      ports:
+          - "37348:37347"
+          - "127.0.0.1:36658:36658" 
+      environment:
+          - TESTNET       
+      networks:
+          - als        
+networks:
+    als:
+        driver: bridge
+
+volumes:
+    alliasWalletNodeA:
+    alliaswalletNodeB:
+    
